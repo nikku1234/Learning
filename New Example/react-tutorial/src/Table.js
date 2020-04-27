@@ -1,29 +1,74 @@
+// // import React, { Component } from 'react'
+// //
+// // class Table extends Component{
+// //   render(){
+// //     return(
+// //       <table>
+// //         <thead>
+// //           <tr>
+// //             <th>Name</th>
+// //             <th>Job</th>
+// //           </tr>
+// //         </thead>
+// //         <tbody>
+// //           <tr>
+// //             <td>Nikhil</td>
+// //             <td>Developer</td>
+// //           </tr>
+// //           <tr>
+// //             <td>Abhraham</td>
+// //             <td>Operational Head</td>
+// //           </tr>
+// //           <tr>
+// //             <td>Suman</td>
+// //             <td>Developer</td>
+// //           </tr>
+// //         </tbody>
+// //       </table>
+// //     )
+// //   }
+// // }
+// //
+// // export default Table
+//
+// // New code
 // import React, { Component } from 'react'
+// const TableHeader = () => {
+//   return(
+//     <thead>
+//       <tr>
+//         <th>Name</th>
+//         <th>Job</th>
+//       </tr>
+//     </thead>
+//   )
+// }
+//
+// const TableBody = () => {
+//   return(
+//     <tbody>
+//       <tr>
+//         <td>Nikhil</td>
+//         <td>Developer</td>
+//       </tr>
+//       <tr>
+//         <td>Abhraham</td>
+//         <td>Operational Head</td>
+//       </tr>
+//       <tr>
+//         <td>Suman</td>
+//         <td>Developer</td>
+//       </tr>
+//     </tbody>
+//   )
+// }
 //
 // class Table extends Component{
 //   render(){
 //     return(
 //       <table>
-//         <thead>
-//           <tr>
-//             <th>Name</th>
-//             <th>Job</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           <tr>
-//             <td>Nikhil</td>
-//             <td>Developer</td>
-//           </tr>
-//           <tr>
-//             <td>Abhraham</td>
-//             <td>Operational Head</td>
-//           </tr>
-//           <tr>
-//             <td>Suman</td>
-//             <td>Developer</td>
-//           </tr>
-//         </tbody>
+//         <TableHeader/>
+//         <TableBody />
 //       </table>
 //     )
 //   }
@@ -31,48 +76,10 @@
 //
 // export default Table
 
-// New code
-import React, { Component } from 'react'
 
-const TableHeader = () => {
-  return(
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Job</th>
-      </tr>
-    </thead>
-  )
+//New code for dynamic display
+
+const TableBody = () =>{
+  return <tbody />
+  
 }
-
-const TableBody = () => {
-  return(
-    <tbody>
-      <tr>
-        <td>Nikhil</td>
-        <td>Developer</td>
-      </tr>
-      <tr>
-        <td>Abhraham</td>
-        <td>Operational Head</td>
-      </tr>
-      <tr>
-        <td>Suman</td>
-        <td>Developer</td>
-      </tr>
-    </tbody>
-  )
-}
-
-class Table extends Component{
-  render(){
-    return(
-      <table>
-        <TableHeader/>
-        <TableBody />
-      </table>
-    )
-  }
-}
-
-export default Table
