@@ -23,7 +23,7 @@ export default class Data extends React.Component {
                 <Card>
                     <CardBody>
                         <CardTitle>{setup}</CardTitle>
-                        <Button color="secondary" onClick={this.toggle}>Laugh</Button>
+                        <Button color="secondary" onClick={this.toggle}>CLICK</Button>
                         <Fade in={this.state.fadeIn} className='my-2'>
                             <CardText>{punchline}</CardText>
                         </Fade>

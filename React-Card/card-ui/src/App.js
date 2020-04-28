@@ -14,44 +14,48 @@ export default class App extends React.Component {
     this.state = {
       datas: [
         {
-          setup: "What time did the man go to the dentist?",
-          punchline: "Tooth hurt-y"
+          setup: "Data",
+          punchline: "Answer"
         },
         {
-          setup: "Did you hear about the guy who invented Lifesavers?",
-          punchline: "They say he made a mint"
+          setup: "Data",
+          punchline: "Answer"
         },
         {
-          setup: "Why do chicken coops only have two doors?",
-          punchline: "Because if they had four, they would be chicken sedans!"
+          setup: "Data",
+          punchline: "Answer"
         },
         {
-          setup: "Why do chicken coops only have two doors?",
-          punchline: "Because if they had four, they would be chicken sedans!"
+          setup: "Data",
+          punchline: "Answer"
         },
         {
-          setup: "Why do chicken coops only have two doors?",
-          punchline: "Because if they had four, they would be chicken sedans!"
+          setup: "Data",
+          punchline: "Answer"
         },
         {
-          setup: "Why do chicken coops only have two doors?",
-          punchline: "Because if they had four, they would be chicken sedans!"
+          setup: "Data",
+          punchline: "Answer"
         },
         {
-          setup: "Why do chicken coops only have two doors?",
-          punchline: "Because if they had four, they would be chicken sedans!"
+          setup: "Data",
+          punchline: "Answer"
         },
         {
-          setup: "Why do chicken coops only have two doors?",
-          punchline: "Because if they had four, they would be chicken sedans!"
+          setup: "Data",
+          punchline: "Answer"
         },
         {
-          setup: "Why do chicken coops only have two doors?",
-          punchline: "Because if they had four, they would be chicken sedans!"
+          setup: "Data",
+          punchline: "Answer"
         },
         {
-          setup: "Why did the Clydesdale give the pony a glass of water?",
-          punchline: "Because he was a little horse!"
+          setup: "Data",
+          punchline: "Answer"
+        },
+        {
+          setup: "Data",
+          punchline: "Answer"
         }
       ]
     }
@@ -71,7 +75,7 @@ export default class App extends React.Component {
           <h1 className="display-3">Data Cards</h1>
           <p className="lead">Data presented on each card-ui elements</p>
           <hr className="my-2" />
-          <p>Prepare to be amused!</p>
+          {/* <p>Prepare to be amused!</p> */}
           <p className="lead">
           </p>
         </Jumbotron>
