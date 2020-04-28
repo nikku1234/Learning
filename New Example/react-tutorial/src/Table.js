@@ -78,8 +78,9 @@
 
 
 //New code for dynamic display
+import React, { Component } from 'react'
 
 const TableBody = () =>{
   return <tbody />
-  
+
 }
