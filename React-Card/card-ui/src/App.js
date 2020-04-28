@@ -1,19 +1,33 @@
 import React from 'react';
-import { Jumbotron } from 'reactstrap';
+import Data from './Data';
+import {
+  Jumbotron,
+  Container,
+  Row,
+  Col
+} from 'reactstrap';
 import './App.css';
 
 export default class App extends React.Component {
+
   render() {
     return (
       <div>
         <Jumbotron>
-          <h1 className="display-3">Hello, world!</h1>
-          <p className="lead">This is a simple hero unit, a simple Jumbotron-style component for calling extra attention to featured content or information.</p>
+          <h1 className="display-3">Joke Cards</h1>
+          <p className="lead">Welcome to the next billion dollar app taking the world by storm</p>
           <hr className="my-2" />
-          <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+          <p>Prepare to be amused!</p>
           <p className="lead">
           </p>
         </Jumbotron>
+        <Container fluid>
+          <Row>
+            <Col className="p-3" sm="4">
+              <Data />
+            </Col>
+          </Row>
+        </Container>
       </div>
     );
   }
