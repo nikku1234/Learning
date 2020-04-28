@@ -11,7 +11,7 @@ import Table from './Table'
 //   }
 // }
 //
-// export default App
+//
 
 
 //Dynamic Entry
@@ -40,3 +40,4 @@ class App extends Component{
   }
 
 }
+export default App
