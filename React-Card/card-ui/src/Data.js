@@ -17,7 +17,7 @@ export default class Data extends React.Component {
     }
 
     render() {
-        let { setup, punchline } = this.props.humor;
+        let { setup, punchline } = this.props.info;
         return (
             <div>
                 <Card>
