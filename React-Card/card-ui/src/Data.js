@@ -17,14 +17,15 @@ export default class Data extends React.Component {
     }
 
     render() {
+        let { setup, punchline } = this.props.humor;
         return (
             <div>
                 <Card>
                     <CardBody>
-                        <CardTitle>What time did the man go to the dentist?</CardTitle>
-                        <Button color="primary" onClick={this.toggle}>Laugh</Button>
+                        <CardTitle>{setup}</CardTitle>
+                        <Button color="secondary" onClick={this.toggle}>Laugh</Button>
                         <Fade in={this.state.fadeIn} className='my-2'>
-                            <CardText>Tooth hurt-y</CardText>
+                            <CardText>{punchline}</CardText>
                         </Fade>
                     </CardBody>
                 </Card>
