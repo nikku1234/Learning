@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content=
+    "application/xhtml+xml; charset=iso-8859-1" />
+    <title>
+      6.63.&nbsp;Zstd-1.4.4
+    </title>
+    <link rel="stylesheet" type="text/css" href="../stylesheets/lfs.css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.78.1" />
+    <link rel="stylesheet" href="../stylesheets/lfs-print.css" type=
+    "text/css" media="print" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body class="lfs" id="lfs-9.1">
+    <div class="navheader">
+      <h4>
+        Linux From Scratch - Version 9.1
+      </h4>
+      <h3>
+        Chapter&nbsp;6.&nbsp;Installing Basic System Software
+      </h3>
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="gzip.html" title="Gzip-1.10">Prev</a>
+          <p>
+            Gzip-1.10
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="iproute2.html" title=
+          "IPRoute2-5.5.0">Next</a>
+          <p>
+            IPRoute2-5.5.0
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 9.1 ">Home</a>
+        </li>
+      </ul>
+    </div>
+    <div class="wrap" lang="en" xml:lang="en">
+      <h1 class="sect1">
+        <a id="ch-system-zstd" name="ch-system-zstd"></a>6.63. Zstd-1.4.4
+      </h1>
+      <div class="package" lang="en" xml:lang="en">
+        <p>
+          Zstandard is a real-time compression algorithm, providing high
+          compression ratios. It offers a very wide range of compression /
+          speed trade-offs, while being backed by a very fast decoder.
+        </p>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong class="segtitle">Approximate build time:</strong>
+              <span class="segbody">0.7 SBU</span>
+            </div>
+            <div class="seg">
+              <strong class="segtitle">Required disk space:</strong>
+              <span class="segbody">16 MB</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="installation" lang="en" xml:lang="en">
+        <h2 class="sect2">
+          6.63.1. Installation of Zstd
+        </h2>
+        <p>
+          Compile the package:
+        </p>
+        <pre class="userinput">
+<kbd class="command">make</kbd>
+</pre>
+        <p>
+          This package does not come with a test suite.
+        </p>
+        <p>
+          Install the package:
+        </p>
+        <pre class="userinput">
+<kbd class="command">make prefix=/usr install</kbd>
+</pre>
+        <p>
+          Remove the static library and move the shared library to
+          <code class="filename">/lib</code>. Also, the <code class=
+          "filename">.so</code> file in <code class=
+          "filename">/usr/lib</code> will need to be recreated:
+        </p>
+        <pre class="userinput">
+<kbd class="command">rm -v /usr/lib/libzstd.a
+mv -v /usr/lib/libzstd.so.* /lib
+ln -sfv ../../lib/$(readlink /usr/lib/libzstd.so) /usr/lib/libzstd.so</kbd>
+</pre>
+      </div>
+      <div class="content" lang="en" xml:lang="en">
+        <h2 class="sect2">
+          <a id="contents-zstd" name="contents-zstd"></a>6.63.2. Contents of
+          Zstd
+        </h2>
+        <div class="segmentedlist">
+          <div class="seglistitem">
+            <div class="seg">
+              <strong class="segtitle">Installed programs:</strong>
+              <span class="segbody">zstd, zstdcat (link to zstd), zstdgrep,
+              zstdless, zstdmt (link to zstd), and unzstd (link to
+              zstd)</span>
+            </div>
+            <div class="seg">
+              <strong class="segtitle">Installed library:</strong>
+              <span class="segbody">libzstd.so</span>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <h3>
+            Short Descriptions
+          </h3>
+          <table border="0" class="variablelist">
+            <colgroup>
+              <col align="left" valign="top" />
+              <col />
+            </colgroup>
+            <tbody>
+              <tr>
+                <td>
+                  <p>
+                    <a id="zstd" name="zstd"></a><span class=
+                    "term"><span class=
+                    "command"><strong>zstd</strong></span></span>
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    Compresses or decompresses files using the ZSTD format
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>
+                    <a id="zstdgrep" name="zstdgrep"></a><span class=
+                    "term"><span class=
+                    "command"><strong>zstdgrep</strong></span></span>
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    Runs <span class="command"><strong>grep</strong></span>
+                    on ZSTD compressed files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>
+                    <a id="zstdless" name="zstdless"></a><span class=
+                    "term"><span class=
+                    "command"><strong>zstdless</strong></span></span>
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    Runs <span class="command"><strong>less</strong></span>
+                    on ZSTD compressed files
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>
+                    <a id="libzstd" name="libzstd"></a><span class=
+                    "term"><code class="filename">libzstd</code></span>
+                  </p>
+                </td>
+                <td>
+                  <p>
+                    The library implementing lossless data compression, using
+                    the ZSTD algorithm
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="navfooter">
+      <ul>
+        <li class="prev">
+          <a accesskey="p" href="gzip.html" title="Gzip-1.10">Prev</a>
+          <p>
+            Gzip-1.10
+          </p>
+        </li>
+        <li class="next">
+          <a accesskey="n" href="iproute2.html" title=
+          "IPRoute2-5.5.0">Next</a>
+          <p>
+            IPRoute2-5.5.0
+          </p>
+        </li>
+        <li class="up">
+          <a accesskey="u" href="chapter06.html" title=
+          "Chapter&nbsp;6.&nbsp;Installing Basic System Software">Up</a>
+        </li>
+        <li class="home">
+          <a accesskey="h" href="../index.html" title=
+          "Linux From Scratch - Version 9.1 ">Home</a>
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>
