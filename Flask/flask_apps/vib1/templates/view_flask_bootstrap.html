@@ -1,0 +1,78 @@
+{% extends "bootstrap/base.html" %}
+
+{% block styles %}
+{{super()}}
+<style>
+    .appsize { width: 800px }
+</style>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+     equationNumbers: {  autoNumber: "AMS"  },
+     extensions: ["AMSmath.js", "AMSsymbols.js", "autobold.js", "color.js"]
+  }
+});
+</script>
+<script type="text/javascript" src=
+"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+{% endblock %}
+
+<!--
+{% block navbar %}
+<nav class="navbar navbar-default" role="navigation">
+<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav">
+       {% for f in some_sequence %}
+       <li><a href="/{{f}}">{{f}}</a></li>
+       {% endfor %}
+       </ul>
+</div>
+</nav>
+{% endblock %}
+-->
+
+{% block content %}
+
+<h2>Damped sine wave</h2>
+
+This web page visualizes the function \(
+u(t) = Ae^{-bt}\sin (w t), \hbox{ for } t\in [0,T]
+\).
+
+<p>
+<form class="navbar-form navbar-top" method="post" action="">
+  <div class="form-group">
+  {% for field in form %}
+    <div class="row">
+     <div class="input-group appsize">
+      <label class="col-sm-1 control-label">
+      <span class="input-group-addon"> \( {{ field.name }} \) </span>
+      </label>
+      <div class="col-sm-4">
+      {{ field(class_="form-control") }}
+      </div>
+      <div class="col-sm-4">
+        {{ field.label }}
+      </div>
+      {% if field.errors %}
+        {% for error in field.errors %}
+          <div class="col-sm-3">
+            <div style="color: red;">{{ error }}</div>
+          </div>
+        {% endfor %}
+      {% endif %}
+     </div>
+    </div>
+  {% endfor %}
+<br/>
+<input type="submit" value="Compute" class="btn btn-default">
+</form>
+
+<p>
+{% if result != None %}
+<img src="{{ result }}" width="500">
+{% endif %}
+</html>
+{% endblock %}
