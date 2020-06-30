@@ -1,0 +1,186 @@
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Place Searches</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script>
+        // This example requires the Places library. Include the libraries=places
+        // parameter when you first load the API. For example:
+        // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+    var map;
+    var poly;
+
+        function createMap() {
+                 // Map options
+            var options = {
+                zoom: 15,
+                center: { lat: 12.972442, lng: 77.580643 },
+            }
+            map = new google.maps.Map(document.getElementById('map'), options);
+
+            // New map
+            // var map = new google.maps.Map(document.getElementById('map'), options);
+
+            // Listen for click on map
+            google.maps.event.addListener(map, 'click', function (event) {
+                // Add marker
+                addMarker({ coords: event.latLng });
+            });
+
+
+            poly = new google.maps.Polyline({
+                strokeColor: '#000000',
+                strokeOpacity: 1.0,
+                strokeWeight: 3
+            });
+            poly.setMap(map);
+
+
+
+            // Array of markers
+            var markers = [
+                {
+                    coords: { lat: 12.972442, lng: 77.580643 },
+                    iconImage: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+                    content: '<h1>Banglore</h1>'
+                }]
+            //     {
+            //         coords: { lat: 13.107568, lng: 77.571198 },
+            //         content: '<h1> Yelakhanka</h1>'
+            //     },
+            // ];
+
+            // // Loop through markers
+            // for (var i = 0; i < markers.length; i++) {
+            //     // Add marker
+                addMarker(markers[0]);
+            // }
+
+
+            // Add Marker Function
+            function addMarker(props) {
+                var marker = new google.maps.Marker({
+                    position: props.coords,
+                    map: map,
+                    //icon:props.iconImage
+                });
+
+                // Check for customicon
+                if (props.iconImage) {
+                    // Set icon image
+                    marker.setIcon(props.iconImage);
+                }
+
+                // Check content
+                if (props.content) {
+                    var infoWindow = new google.maps.InfoWindow({
+                        content: props.content
+                    });
+
+                    marker.addListener('click', function () {
+                        infoWindow.open(map, marker);
+                    });
+                }
+            }
+
+
+
+
+
+
+
+          //finding the restaurant
+            var request = {
+                location: map.getCenter(),
+                radius: 10000,
+                types: ['restaurant']
+            }
+
+            var service = new google.maps.places.PlacesService(map);
+
+            service.nearbySearch(request, callback);
+
+            var line = new google.maps.Polyline({
+                path: [new google.maps.LatLng(37.4419, -122.1419), new google.maps.LatLng(37.4519, -122.1519)],
+                strokeColor: "#FF0000",
+                strokeOpacity: 1.0,
+                strokeWeight: 10,
+                geodesic: true,
+                map: map
+            });
+
+
+
+        }
+
+        function callback(results, status) {
+            // var res = [];
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+                // res[0] = results[0];
+                // res[1] = results[0];
+                console.log(results.length);
+                // console.log(results[0]);
+                // console.log(results[9].geometry.location);
+                // console.log(results[9].geometry.location- results[0].geometry.location);
+            //    for (var i = 1; i < 10; i++) {
+                //   console.log(results);
+                // if(res[0]>results[i]){
+                //     res[0] = results[i];
+                //     console.log("inside first if")
+
+                // }
+                // if (res[1] < results[i]){
+                //     res[1] = results[i];
+                //     console.log("inside second if")
+                // }
+
+                //    createMarker(results[2]);
+                //    createMarker(results[3]);
+                //     createMarker(results[4]);
+                //     createMarker(results[9]);
+            //    }
+                createMarker(results[0]);
+                createMarker(results[9]);
+                // createMarker(res[0]);
+                // createMarker(res[1]);
+
+            }
+        }
+  //marker 
+        function createMarker(place) {
+            var placeLoc = place.geometry.location;
+            var marker = new google.maps.Marker({
+                map: map,
+                position: place.geometry.location,
+                title: place.name
+            })
+        }
+
+
+
+    </script>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZzHaeeOBaSGFUE81rXiIT2uFAhMCQAB8&libraries=places&callback=createMap" async defer></script>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDZzHaeeOBaSGFUE81rXiIT2uFAhMCQAB8&libraries=geometry"></script>
+
+</body>
+</html>

@@ -1,0 +1,1 @@
+you can change the location co-ordinates also in the script. This has the bing maps, api. was about to integrate with zomato api, but then I switched to google maps and places api.

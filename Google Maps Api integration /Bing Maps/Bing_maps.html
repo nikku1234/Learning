@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Bing Maps</title>
+  <meta charset="utf-8" />
+  <script src="scripts/jquery.js"></script>
+  <script src="scripts/bootstrap.js"></script>
+  <script type='text/javascript'>
+    var map, contextMenu, loc;
+    var lat = 12.972442, long = 77.580643;
+
+    // const Zomato = require('src/zomato.js');
+    // const z = new Zomato('635955190426412cac4101badc159996');
+
+    $(document).ready(function() {
+      $('#go_bttn').on('click', function() {
+
+        lat = $('#lat').val();
+        long = $('#long').val();
+        console.log(lat,long);
+        set_mapTypeId();
+        // zomato
+        //   .collections({
+        //     lat: 19.0895595,
+        //     lon: 72.8634203,
+        //     count: 5
+        //   })
+        //   .then(function (data) {
+        //     console.log(data);
+        //   })
+        //   .catch(function (err) {
+        //     console.error(err);
+        //   });
+
+        //   $.ajax({
+        //   url: 'https://developers.zomato.com/api/v2.1/cities?lat=12.972442%2C%20&lon=7.580643%3B&count=10',
+        //   cache: false,
+        //   type: 'GET',
+        //   success: function (result) {
+        //     console.log(data);
+        //     console.log("response data");
+        //     alert(data);
+        //   },
+        //   error: function (error) {
+        //     console.log(error);
+        //   }
+        // });
+
+
+
+
+
+
+
+      });
+    });
+
+    function GetMap() {
+      var northCarolinaBounds = Microsoft.Maps.LocationRect.fromEdges(7.798000, 68.14712, 37.090000, 97.34466);
+      map = new Microsoft.Maps.Map('#myMap', {
+        showDashboard: false, //Hide the default navigation bar.
+        maxBounds: northCarolinaBounds,
+        bounds: northCarolinaBounds
+      });
+    }
+
+    function GetMapStreetView() {
+      loc = new Microsoft.Maps.Location(lat, long);
+      map = new Microsoft.Maps.Map('#myMap', {
+        showDashboard: false,
+        center: loc,
+        mapTypeId: Microsoft.Maps.MapTypeId.streetside,
+        streetsideOptions: {
+          showExitButton: false,
+          showCurrentAddress: false
+        },
+      });
+    }
+
+    function GetMapBirdseyeView() {
+      map = new Microsoft.Maps.Map('#myMap', {
+        showDashboard: false,
+        center: new Microsoft.Maps.Location(lat, long),
+        mapTypeId: Microsoft.Maps.MapTypeId.birdseye,
+      });
+    }
+
+    function set_mapTypeId() {
+      GetMap();
+      var map_type_id = document.getElementById("map_type").value;
+      if (map_type_id == "road") {
+        map.setView({
+          mapTypeId: Microsoft.Maps.MapTypeId.road
+        });
+      } else if (map_type_id == "aerial") {
+        map.setView({
+          mapTypeId: Microsoft.Maps.MapTypeId.aerial
+        });
+      } else if (map_type_id == "streetside") {
+        GetMapStreetView();
+      } else if (map_type_id == "birdseye") {
+        GetMapBirdseyeView();
+        setTimeout(function() {
+          document.getElementsByClassName("birdseyeV2InfoExitControl")[0].innerHTML = "";
+        }, 2000);
+      } else if (map_type_id == "canvasLight") {
+        map.setView({
+          mapTypeId: Microsoft.Maps.MapTypeId.canvasLight
+        });
+      } else if (map_type_id == "canvasDark") {
+        map.setView({
+          mapTypeId: Microsoft.Maps.MapTypeId.canvasDark
+        });
+      } else if (map_type_id == "grayscale") {
+        map.setView({
+          mapTypeId: Microsoft.Maps.MapTypeId.grayscale
+        });
+      }
+    }
+  </script>
+  <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=AogFeOioVboHdrqKGvCSj8eL7SGayvKhmGmh5AqvTC91OxMbgv3xazNTbgcNEoeo ' async defer></script>
+  <style>
+    .mapContainer,
+    #myMap {
+      position: relative;
+      width: 700px;
+      height: 500px;
+    }
+
+    .customNavBar {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="row">
+    <label class="control-label col-sm-3" for="lat"><b>Latitude</b></label>
+    <div class="col-sm-9">
+      <input type="text" class="form-control" name="lat" id="lat" required="">
+    </div>
+  </div>
+  <div class="row">
+    <label class="control-label col-sm-3" for="long"><b>Longitude</b></label>
+    <div class="col-sm-9">
+      <input type="text" class="form-control" name="long" id="long" required="">
+    </div>
+    <div class="col-sm-12">
+      <button type="button" id="go_bttn" class="btn btn-primary pull-right">Go</button>
+    </div>
+    <div class="mapContainer">
+      <div style="text-align: center; margin: 10px auto;">
+        <div id="myMap" style="position:relative; width:800px; height:600px; border: 2px solid red;"></div>
+        <div class="customNavBar">
+          <select name="map_type" id="map_type" onchange="set_mapTypeId();">
+            <option value="road">Road</option>
+            <option value="aerial">Aerial</option>
+            <option value="streetside">Street Side</option>
+            <option value="birdseye">Birdseye</option>
+            <option value="canvasLight">Canvas Light</option>
+            <option value="canvasDark">Canvas Dark</option>
+            <option value="grayscale">Gray scale</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+</body>
+
+</html>

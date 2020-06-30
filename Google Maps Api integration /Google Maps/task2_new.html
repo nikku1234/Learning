@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Simple Map</title>
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta charset="utf-8">
+  <style>
+    /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+    #map {
+      height: 100%;
+    }
+
+    /* Optional: Makes the sample page fill the window. */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+  <script>
+
+    //To find the distance
+    function haversine_distance(mk1, mk2) {
+      var R = 3958.8; // Radius of the Earth in miles
+      var rlat1 = mk1.position.lat() * (Math.PI / 180); // Convert degrees to radians
+      var rlat2 = mk2.position.lat() * (Math.PI / 180); // Convert degrees to radians
+      var difflat = rlat2 - rlat1; // Radian difference (latitudes)
+      var difflon = (mk2.position.lng() - mk1.position.lng()) * (Math.PI / 180); // Radian difference (longitudes)
+
+      var d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat / 2) * Math.sin(difflat / 2) + Math.cos(rlat1) * Math.cos(rlat2) * Math.sin(difflon / 2) * Math.sin(difflon / 2)));
+      return d;
+    }
+
+
+
+
+
+    var marker, marker1, marker2;
+    var lat_marker, lng_marker, lat_marker1, lng_marker1, lat_marker2, lng_marker2;
+    var distance_a_to_b = 0, distance_b_to_c = 0, distance_c_to_a = 0, total_distance = 0;
+
+    // function haversine_distance(mk1, mk2) {
+    //     var R = 3958.8; // Radius of the Earth in miles
+    //     var rlat1 = mk1.position.lat() * (Math.PI / 180); // Convert degrees to radians
+    //     var rlat2 = mk2.position.lat() * (Math.PI / 180); // Convert degrees to radians
+    //     var difflat = rlat2 - rlat1; // Radian difference (latitudes)
+    //     var difflon = (mk2.position.lng() - mk1.position.lng()) * (Math.PI / 180); // Radian difference (longitudes)
+
+    //     var d = 2 * R * Math.asin(Math.sqrt(Math.sin(difflat / 2) * Math.sin(difflat / 2) + Math.cos(rlat1) * Math.cos(rlat2) * Math.sin(difflon / 2) * Math.sin(difflon / 2)));
+    //     return d;
+    // }
+
+
+    //Initialise the map
+    function initMap() {
+      var myLatlng = {
+        lat: 12.972442,
+        lng: 77.580643
+      };
+
+      var map = new google.maps.Map(
+        document.getElementById('map'), {
+        zoom: 16,
+        center: myLatlng
+      });
+
+      // Create the initial InfoWindow.
+      var infoWindow = new google.maps.InfoWindow({
+        content: 'Click the map to select a location!',
+        position: myLatlng
+      });
+      infoWindow.open(map);
+
+      // Configure the click listener.
+      map.addListener('click', function (mapsMouseEvent) {
+        // Close the current InfoWindow.
+        infoWindow.close();
+
+        // Create a new InfoWindow.
+        infoWindow = new google.maps.InfoWindow({
+          position: mapsMouseEvent.latLng
+        });
+        infoWindow.setContent(mapsMouseEvent.latLng.toString());
+        // infoWindow.open(map);
+        //Marking the clicked position on the map
+        marker = new google.maps.Marker({
+          position: mapsMouseEvent.latLng,
+          map: map,
+          title: 'A'
+        });
+
+
+        var request = {
+          location: mapsMouseEvent.latLng,
+          radius: 1000,
+          types: ['restaurant']
+        }
+
+        //Calling places service to get the restaurent
+        var service = new google.maps.places.PlacesService(map);
+
+        service.nearbySearch(request, callback);
+        // console.log("outside");
+        // total_distance = (distance_a_to_b + distance_b_to_c + distance_c_to_a) * 1.60934; //Adding all the values and then converting it into km
+
+        // console.log("distance in km", total_distance);
+        // console.log("time taken to cover the distance if walking in 5km/h", total_distance / 5);
+
+        /*  var distance_service = new google.maps.DistanceMatrixService(); // instantiate Distance Matrix service
+         const matrixOptions = {
+           origins: [lat_marker, lng_marker], // technician locations
+           destinations: [lat_marker1, lng_marker1], // customer address
+           travelMode: 'DRIVING',
+           unitSystem: google.maps.UnitSystem.IMPERIAL
+         };
+         // Call Distance Matrix service
+         service.getDistanceMatrix(matrixOptions, distance_callback);
+         
+         // Callback function used to process Distance Matrix response
+         
+         function distance_callback(response, status) {
+           if (status !== "OK") {
+             alert("Error with distance matrix");
+             return;
+           }
+           console.log(response);
+         } */
+
+        function callback(results, status) {
+          // var res = [];
+          if (status == google.maps.places.PlacesServiceStatus.OK) {
+            // res[0] = results[0];
+            // res[1] = results[0];
+            console.log(results.length);
+            // var temp = new Array[results.length];
+            /*            for(var i=0;i<results.length;i++){
+                       //   var temp[0] = new google.maps.Marker({
+                         //position: results[i].geometry.location,
+                        // map: map
+                                    // });
+                                    console.log(results[i]);
+                       } */
+
+            //Marking the restaurents
+            marker1 = new google.maps.Marker({
+              position: results[0].geometry.location,
+              map: map,
+              title: 'B'
+            });
+
+            marker2 = new google.maps.Marker({
+              position: results[19].geometry.location,
+              map: map,
+              title: 'C'
+            });
+
+
+            //Define the poly
+            poly = new google.maps.Polyline({
+              strokeColor: '#000000',
+              strokeOpacity: 1.0,
+              strokeWeight: 3
+            });
+            poly.setMap(map);
+            // var path = poly.getPath();
+
+            // // Because path is an MVCArray, we can simply append a new coordinate
+            // // and it will automatically appear.
+            // path.push(mapsMouseEvent.latLng);
+            // path.push(results[0].geometry.location);
+            // path.push(results[19].geometry.location);
+            // path.push(mapsMouseEvent.latLng);
+
+
+            /*   var rad = function(x) {
+                return x * Math.PI / 180;
+              };
+              
+              var getDistance = function(p1, p2) {
+                var R = 6378137; // Earth’s mean radius in meter
+                var dLat = rad(p2.lat() - p1.lat());
+                var dLong = rad(p2.lng() - p1.lng());
+                var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                  Math.cos(rad(p1.lat())) * Math.cos(rad(p2.lat())) *
+                  Math.sin(dLong / 2) * Math.sin(dLong / 2);
+                var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                var d = R * c;
+                return d; // returns the distance in meter
+              };
+               */
+
+            /* var distanceInMeters = google.maps.geometry.spherical.computeDistanceBetween(
+                marker1.getPosition(),
+                marker2.getPosition()
+            );
+    
+            // Outputs: Distance in Meters:  286562.7470149898
+            console.log("Distance in Meters: ", distanceInMeters);
+    
+            // Outputs: Distance in Kilometers:  286.5627470149898
+            console.log("Distance in Kilometers: ", (distanceInMeters * 0.001));  */
+            //in miles
+
+            var myLatLng_marker = mapsMouseEvent.latLng;
+            lat_marker = myLatLng_marker.lat();
+            lng_marker = myLatLng_marker.lng();
+            //console.log(lng_marker);
+
+            var myLatLng_marker1 = results[0].geometry.location;
+            lat_marker1 = myLatLng_marker1.lat();
+            lng_marker1 = myLatLng_marker1.lng();
+            // console.log(lng_marker2);
+
+            var myLatLng_marker2 = results[19].geometry.location;
+            lat_marker2 = myLatLng_marker2.lat();
+            lng_marker2 = myLatLng_marker2.lng();
+
+
+            //Finding the area of the section.
+            var m = new google.maps.LatLng(lat_marker, lng_marker);
+            var m1 = new google.maps.LatLng(lat_marker1, lng_marker1);
+            var m2 = new google.maps.LatLng(lat_marker2, lng_marker2);
+            var Area = google.maps.geometry.spherical.computeArea([m, m1, m2]);
+            console.log(Area, " sq meters");
+            console.log("Area in sqkm",(Area / (1000 * 1000)).toFixed(2), " sq km");
+
+            //using directions api to get the distance when travelling through the car  A to B
+            let directionsService = new google.maps.DirectionsService();
+            let directionsRenderer = new google.maps.DirectionsRenderer();
+            directionsRenderer.setMap(map); // Existing map object displays directions
+            // Create route from existing points used for markers
+            const route = {
+              origin: mapsMouseEvent.latLng,
+              destination: results[0].geometry.location,
+              travelMode: 'DRIVING'
+            }
+
+            directionsService.route(route,
+              function (response, status) { // anonymous function to capture directions
+                // console.log("service");
+                if (status !== 'OK') {
+                  // console.log("here");
+                  //window.alert('Directions request failed due to ' + status);
+                  return;
+                } else {
+                  directionsRenderer.setDirections(response); // Add route to the map
+                  // console.log(response);
+                  var directionsData = response.routes[0].legs[0]; // Get data about the mapped route
+                  if (!directionsData) {
+                    console.log("directionsData failed");
+                    //  window.alert('Directions //request failed');
+                    return;
+                  } else {
+                    distance_a_to_b = directionsData.distance.text;
+                    // console.log(" Driving distance  from A to B " + distance_a_to_b);
+
+                    // console.log(" Driving distance time from A to B " + directionsData.duration.text);
+                  }
+                }
+            //using directions api to get the distance when travelling through the car B to C
+
+                let directionsService1 = new google.maps.DirectionsService();
+                let directionsRenderer1 = new google.maps.DirectionsRenderer({ suppressMarkers: true, polylineOptions: { strokeColor: '#0000FF' } });
+                directionsRenderer1.setMap(map);
+                const route1 = {
+                  origin: results[0].geometry.location,
+                  destination: results[19].geometry.location,
+                  travelMode: 'DRIVING'
+                }
+
+                directionsService1.route(route1,
+                  function (response, status) { // anonymous function to capture directions
+                    // console.log("service");
+                    if (status !== 'OK') {
+                      //console.log("here");
+                      //window.alert('Directions request failed due to ' + status);
+                      return;
+                    } else {
+                      directionsRenderer1.setDirections(response); // Add route to the map
+                      // console.log(response);
+                      var directionsData = response.routes[0].legs[0]; // Get data about the mapped route
+                      if (!directionsData) {
+                        console.log("directionsData failed");
+                        //  window.alert('Directions //request failed');
+                        return;
+                      } else {
+                        distance_b_to_c = directionsData.distance.text;
+                        // console.log(" Driving distance  from B to C " + distance_b_to_c);
+                        // console.log(" Driving distance time from B to C " + directionsData.duration.text);
+                      }
+                    }
+            //using directions api to get the distance when travelling through the car  C to A
+
+                    let directionsService2 = new google.maps.DirectionsService();
+                    let directionsRenderer2 = new google.maps.DirectionsRenderer({ suppressMarkers: true, polylineOptions: { strokeColor: '#5cb85c' } });
+                    directionsRenderer2.setMap(map);
+                    const route2 = {
+                      origin: results[19].geometry.location,
+                      destination: mapsMouseEvent.latLng,
+                      travelMode: 'DRIVING'
+                    }
+
+                    directionsService2.route(route2,
+                      function (response, status) { // anonymous function to capture directions
+                        // console.log("service");
+                        if (status !== 'OK') {
+                          // console.log("here");
+                          //window.alert('Directions request failed due to ' + status);
+                          return;
+                        } else {
+                          directionsRenderer2.setDirections(response); // Add route to the map
+                          //console.log(response);
+                          var directionsData = response.routes[0].legs[0]; // Get data about the mapped route
+                          if (!directionsData) {
+                            console.log("directionsData failed");
+                            //  window.alert('Directions //request failed');
+                            return;
+                          } else {
+                            distance_c_to_a = directionsData.distance.text;
+                            // console.log(" Driving distance  from C to A " + distance_c_to_a);
+                            // console.log(" Driving distance time from C to A " + directionsData.duration.text);
+
+                            //Computing  the total distance of the travel and finding the time taken to travel through this path. As it was a asychronous function I am computing the distance after the computation of all the distances
+                            total_distance = (parseInt(distance_a_to_b) + parseInt(distance_b_to_c) + parseInt(distance_c_to_a)) * 1.60934; //Adding all the values and then converting it into km
+
+                            console.log("Total driving distance in km", total_distance);
+                            console.log("time taken to cover the distance if walking in 5km/h", total_distance / 5);
+                          }
+                        }
+                      });
+                  });
+
+              });
+
+            // let directionsService1 = new google.maps.DirectionsService();
+            // let directionsRenderer1 = new google.maps.DirectionsRenderer({ suppressMarkers: true, polylineOptions: { strokeColor: '#0000FF' } });
+            // directionsRenderer1.setMap(map);
+            // const route1 = {
+            //   origin: results[0].geometry.location,
+            //   destination: results[19].geometry.location,
+            //   travelMode: 'DRIVING'
+            // }
+
+            // directionsService1.route(route1,
+            //   function (response, status) { // anonymous function to capture directions
+            //     // console.log("service");
+            //     if (status !== 'OK') {
+            //       //console.log("here");
+            //       //window.alert('Directions request failed due to ' + status);
+            //       return;
+            //     } else {
+            //       directionsRenderer1.setDirections(response); // Add route to the map
+            //       // console.log(response);
+            //       var directionsData = response.routes[0].legs[0]; // Get data about the mapped route
+            //       if (!directionsData) {
+            //         console.log("directionsData failed");
+            //         //  window.alert('Directions //request failed');
+            //         return;
+            //       } else {
+            //         distance_b_to_c = directionsData.distance.text;
+            //         console.log(" Driving distance time from B to C " + directionsData.duration.text);
+            //       }
+            //     }
+            //     let directionsService2 = new google.maps.DirectionsService();
+            //     let directionsRenderer2 = new google.maps.DirectionsRenderer({ suppressMarkers: true, polylineOptions: { strokeColor: '#5cb85c' } });
+            //     directionsRenderer2.setMap(map);
+            //     const route2 = {
+            //       origin: results[19].geometry.location,
+            //       destination: mapsMouseEvent.latLng,
+            //       travelMode: 'DRIVING'
+            //     }
+
+            //     directionsService2.route(route2,
+            //       function (response, status) { // anonymous function to capture directions
+            //         // console.log("service");
+            //         if (status !== 'OK') {
+            //           // console.log("here");
+            //           //window.alert('Directions request failed due to ' + status);
+            //           return;
+            //         } else {
+            //           directionsRenderer2.setDirections(response); // Add route to the map
+            //           //console.log(response);
+            //           var directionsData = response.routes[0].legs[0]; // Get data about the mapped route
+            //           if (!directionsData) {
+            //             console.log("directionsData failed");
+            //             //  window.alert('Directions //request failed');
+            //             return;
+            //           } else {
+            //             distance_c_to_a = directionsData.distance.text;
+            //             console.log(" Driving distance time from C to A " + directionsData.duration.text);
+            //           }
+            //         }
+            //       }); 
+            //   }); 
+            // let directionsService2 = new google.maps.DirectionsService();
+            // let directionsRenderer2 = new google.maps.DirectionsRenderer({ suppressMarkers: true, polylineOptions: { strokeColor: '#5cb85c' } });
+            // directionsRenderer2.setMap(map);
+            //                          const route2 = {
+            //   origin: results[19].geometry.location, 
+            //   destination: mapsMouseEvent.latLng,
+            //   travelMode: 'DRIVING'
+            // }
+
+            // directionsService2.route(route2,
+            //   function (response, status) { // anonymous function to capture directions
+            //     // console.log("service");
+            //     if (status !== 'OK') {
+            //       // console.log("here");
+            //       //window.alert('Directions request failed due to ' + status);
+            //       return;
+            //     } else {
+            //       directionsRenderer2.setDirections(response); // Add route to the map
+            //       //console.log(response);
+            //       var directionsData = response.routes[0].legs[0]; // Get data about the mapped route
+            //       if (!directionsData) {
+            //         console.log("directionsData failed");
+            //         //  window.alert('Directions //request failed');
+            //         return;
+            //       } else {
+            //         distance_c_to_a = directionsData.distance.text;
+            //         console.log(" Driving distance time from C to A " + directionsData.duration.text);
+            //       }
+            //     }
+            //   }); 
+
+
+
+            // let directionsService = new google.maps.DistanceMatrixService(); // instantiate Distance Matrix service
+            //                 let directionsRenderer = new google.maps.DirectionsRenderer();
+            //                 directionsRenderer.setMap(map); // Existing map object displays directions
+            //                 const matrixOptions = {
+            //                     origins: ["41.8848274,-87.6320859", "41.878729,-87.6301087", "41.8855277,-87.6440611"], // technician locations
+            //                     destinations: ["233 S Wacker Dr, Chicago, IL 60606"], // customer address
+            //                     travelMode: 'DRIVING',
+            //                     unitSystem: google.maps.UnitSystem.IMPERIAL
+            //                 };
+            //                 //Call Distance Matrix service
+            //                 directionsService.getDistanceMatrix(matrixOptions, service_callback);
+
+            //                 // Callback function used to process Distance Matrix response
+
+            //                 function service_callback(response, status) {
+            //                         //         function(response, status) { // anonymous function to capture directions
+            //                           console.log("service");
+            //                           if (status !== 'OK') {
+            //                             console.log("here");
+            //                             //window.alert('Directions request failed due to ' + status);
+            //                             return;
+            //                           } else {
+            //                             directionsRenderer.setDirections(response); // Add route to the map
+            //                             console.log(response);
+            //                             var directionsData = response.routes[0].legs[0]; // Get data about the mapped route
+            //                             if (!directionsData) {
+            //                               console.log("directionsData failed");
+            //                               //  window.alert('Directions //request failed');
+            //                               return;
+            //                             } else {
+
+            //                               console.log(" Driving distance is " + directionsData.duration.text);
+            //                             }
+            //                           }
+            //                 }
+
+
+          }
+        }
+
+        // const distance_service = new google.maps.DistanceMatrixService(); // instantiate Distance Matrix service
+        // const matrixOptions = {
+        //     origins: ["41.8848274,-87.6320859", "41.878729,-87.6301087", "41.8855277,-87.6440611"], // technician locations
+        //     destinations: ["233 S Wacker Dr, Chicago, IL 60606"], // customer address
+        //     travelMode: 'DRIVING',
+        //     unitSystem: google.maps.UnitSystem.IMPERIAL
+        // };
+        // Call Distance Matrix service
+        // distance_service.getDistanceMatrix(matrixOptions, service_callback);
+
+        // // Callback function used to process Distance Matrix response
+
+        // function service_callback(response, status) {
+        //     if (status !== "OK") {
+        //         alert("Error with distance matrix"+ status);
+        //         return;
+        //     }
+        //     console.log(response);
+        //     let routes = response.rows[0].elements;
+        //     const leastseconds = 86400; // 24 hours
+        //     let drivetime = "";
+        //     let closest = "";
+
+        //     for (let i = 0; i < routes.length; i++) {
+        //         const routeseconds = routes[i].elements[0].duration.value;
+        //         if (routeseconds > 0 && routeseconds < leastseconds) {
+        //             leastseconds = routeseconds; // this route is the shortest (so far)
+        //             drivetime = routes[i].elements[0].duration.text; // hours and minutes
+        //             closest = response.originAddresses[i]; // city name from destinations
+        //         }
+        //     }
+        //     alert("The closest location is " + closest + " (" + drivetime + ")")
+        // }
+        /*  var distance = haversine_distance(marker, marker1);
+         distance += haversine_distance(marker1, marker2);
+         distance += haversine_distance(marker2, marker1);
+         
+         //convert to km
+         distance = distance * 1.60934;
+         
+         console.log("distance in km", distance);
+         console.log("time taken to cover the distance if walking in 5km/h", distance / 5);
+         
+         var areaPath = [
+                   new google.maps.LatLng(mapsMouseEvent.latLng),
+                   new google.maps.LatLng(results[0].geometry.location),
+                   new google.maps.LatLng(results[19].geometry.location)
+                 ];
+                 
+                 Area = google.maps.geometry.spherical.computeArea(areaPath);
+                 console.log(Area, " sq meters");
+                 console.log((Area / (1000 * 1000)).toFixed(2), " sq km");
+                 
+                 
+                 var polygon = new google.maps.Polygon({
+                   path: areaPath,
+                   map: map
+                 });
+         
+               var s = results[0].geometry.location.toString();
+         console.log(parseInt(s));
+         
+         var myLatLng_marker = mapsMouseEvent.latLng;
+         var lat_marker = myLatLng_marker.lat();
+         var lng_marker = myLatLng_marker.lng();
+         //console.log(lng_marker);
+         
+         var myLatLng_marker1 = results[0].geometry.location;
+         var lat_marker1 = myLatLng_marker1.lat();
+         var lng_marker1 = myLatLng_marker1.lng();
+         // console.log(lng_marker2);
+          
+         var myLatLng_marker2 = results[19].geometry.location;
+         var lat_marker2 = myLatLng_marker2.lat();
+         var lng_marker2 = myLatLng_marker2.lng();
+         //console.log(lng_marker2);
+         
+         var m = new google.maps.LatLng(lat_marker,lng_marker);
+         var m1 = new google.maps.LatLng(lat_marker1,lng_marker1);
+         var m2 = new google.maps.LatLng(lat_marker2,lng_marker2);
+         var Area = google.maps.geometry.spherical.computeArea([m, m1, m2]);
+         console.log(Area, " sq meters");
+         console.log((Area / (1000 * 1000)).toFixed(2), " sq km");
+         
+         var nyc = new google.maps.LatLng(40.715, -74.002);
+                 var london = new google.maps.LatLng(51.506, -0.119);
+                 var rio = new google.maps.LatLng(-22.916, -43.251);
+                 var area = google.maps.geometry.spherical.computeArea([nyc, london, rio]);
+                 console.log(area);
+                 
+                  */
+        /*  let directionsService = new google.maps.DirectionsService(); */
+
+        //let directionsRenderer = new google.maps.DirectionsRenderer();
+        //directionsRenderer.setMap(map); // Existing map object displays directions
+        // Create route from existing points used for markers
+        /*     const route = {
+              origin: [lat_marker, lng_marker],
+              destination: [lat_marker1, lng_marker1],
+              travelMode: 'DRIVING'
+            } */
+
+        /*   directionsService.route(route,
+            function(response, status) { // anonymous function to capture directions
+              console.log("service");
+              if (status !== 'OK') {
+                console.log("here");
+                //window.alert('Directions request failed due to ' + status);
+                return;
+              } else {
+                //directionsRenderer.setDirections(response); // Add route to the map
+                var directionsData = response.routes[0].legs[0]; // Get data about the mapped route
+                if (!directionsData) {
+                  console.log("directionsData here");
+                  //  window.alert('Directions //request failed');
+                  return;
+                } else {
+                  console.log("directionsData here");
+                  console.log(" Driving distance is " + directionsData.duration.text);
+                }
+              }
+            }); */
+
+
+
+
+      });
+
+
+    }
+
+
+  </script>
+
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZzHaeeOBaSGFUE81rXiIT2uFAhMCQAB8&callback=initMap"></script>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZzHaeeOBaSGFUE81rXiIT2uFAhMCQAB8&libraries=places,geometry&callback=initMap"
+    async defer></script>
+
+  <!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZzHaeeOBaSGFUE81rXiIT2uFAhMCQAB8&libraries=geometry&callback=initMap"
+ -->
+</body>
+
+</html>
