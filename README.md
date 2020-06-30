@@ -5,7 +5,7 @@ The new set of projects, I am working on.
 
 - [x] [Flask](https://github.com/nikku1234/Learning/tree/master/Flask)
 
-- [x] [Google Maps Api Integration](Google Maps Api integration)
+- [x] [Google Maps Api Integration](https://github.com/nikku1234/Learning/tree/master/Google%20Maps%20Api%20integration%20)
 
 - [x] [Jitsi Integration](https://github.com/nikku1234/Learning/tree/master/Jitsi%20Integration)
 
