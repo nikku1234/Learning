@@ -15,6 +15,6 @@ The new set of projects, I am working on.
 
 - [x] [Linux Kernal](https://github.com/nikku1234/Learning/tree/master/Understanding%20the%20Linux%20Kernal)
 
-- [] [Read Apple Research Papers](https://machinelearning.apple.com/research/)
+- [ ] [Read Apple Research Papers](https://machinelearning.apple.com/research/)
 
 
