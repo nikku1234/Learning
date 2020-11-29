@@ -1,0 +1,13 @@
+>>> "3 cool features in Python 3.9".strip(" 3.9")
+'cool features in Python'
+>>> "3 cool features in Python 3.9"[:-len(" 3.9")]
+'3 cool features in Python'
+>>> "3 cool features in Python 3.9".removesuffix(" 3.9")
+'3 cool features in Python'
+>>> "3 cool features in Python 3.9".removeprefix(" 3.9")
+'3 cool features in Python 3.9'
+>>> "3 cool features in Python 3.9".removeprefix("3")
+' cool features in Python 3.9'
+>>> "Waikiki".removesuffix("ki")
+'Waiki'
+

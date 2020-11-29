@@ -1,0 +1,10 @@
+>>> from math import gcd, lcm
+>>> gcd(49, 14)
+7
+>>> lcm(49, 14)
+98
+>>> from functools import reduce
+>>> reduce(gcd, [273, 1729, 6048])
+7
+>>> gcd(273, 1729, 6048)
+7

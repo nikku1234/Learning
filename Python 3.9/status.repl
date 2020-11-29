@@ -1,0 +1,11 @@
+>>> from http import HTTPStatus
+>>> HTTPStatus.OK
+<HTTPStatus.OK: 200>
+>>> HTTPStatus.OK.description
+'Request fulfilled, document follows'
+>>> HTTPStatus.EARLY_HINTS
+<HTTPStatus.EARLY_HINTS: 103>
+>>> HTTPStatus.EARLY_HINTS.value
+103
+>>> HTTPStatus(425).phrase
+'Too Early'

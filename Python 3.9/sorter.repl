@@ -1,0 +1,10 @@
+>>> dependencies = {
+...     "realpython-reader":{"feedparser", "html2text"},
+...     "feedparser":{"sgmllib3k"},
+... }
+>>> from graphlib import TopologicalSorter
+>>> sorter = TopologicalSorter(dependencies)
+>>> sorter.static_order()
+<generator object TopologicalSorter.static_order at 0x7feb8f6199e0>
+>>> list(sorter.static_order())
+['html2text', 'sgmllib3k', 'feedparser', 'realpython-reader']

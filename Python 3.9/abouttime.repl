@@ -1,0 +1,34 @@
+>>> from datetime import datetime, timezone
+>>> datetime.now()
+datetime.datetime(2020, 9, 23, 13, 21, 55, 632239)
+>>> datetime.now(tz=timezone.utc)
+datetime.datetime(2020, 9, 23, 17, 22, 2, 792297, tzinfo=datetime.timezone.utc)
+>>> from zoneinfo import ZoneInfo
+>>> ZoneInfo("America/Vancouver")
+zoneinfo.ZoneInfo(key='America/Vancouver')
+>>> datetime.now(tz=ZoneInfo("Europe/Oslo"))
+datetime.datetime(2020, 9, 23, 19, 27, 30, 544399, tzinfo=zoneinfo.ZoneInfo(key='Europe/Oslo'))
+>>> release_date = datetime(2020, 10, 5, 3, 9, tzinfo=ZoneInfo("America/Vancouver"))
+>>> release_date.astimezone(ZoneInfo("Europe/Oslo"))
+datetime.datetime(2020, 10, 5, 12, 9, tzinfo=zoneinfo.ZoneInfo(key='Europe/Oslo'))
+>>> len(zoneinfo.available_timezones())
+595
+>>> tz_kiritimati = ZoneInfo("Pacific/Kiritimati")
+>>> nye = datetime(1994, 12, 31, 9, 0, tzinfo=ZoneInfo("UTC"))
+>>> nye.astimezone(tz_kiritimati)
+datetime.datetime(1994, 12, 30, 23, 0, tzinfo=zoneinfo.ZoneInfo(key='Pacific/Kiritimati'))
+>>> from datetime import timedelta
+>>> hour = timedelta(hours=1)
+>>> (nye + hour).astimezone(tz_kiritimati)
+datetime.datetime(1995, 1, 1, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='Pacific/Kiritimati'))
+>>> tz_kiritimati.utcoffset(datetime(1994, 12, 30))
+datetime.timedelta(days=-1, seconds=50400)
+>>> tz_kiritimati.utcoffset(datetime(1994, 12, 30)) / hour
+-10.0
+>>> tz_kiritimati.utcoffset(datetime(1995, 1, 1)) / hour
+14.0
+>>> tz = ZoneInfo("America/Vancouver")
+>>> tz.tzname(datetime(2020, 10, 5))
+'PDT'
+>>> tz.tzname(datetime(2020, 12, 5))
+'PST'

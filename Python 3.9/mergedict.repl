@@ -1,0 +1,51 @@
+>>> pycon = {2016: "Portland", 2018: "Cleveland"}
+>>> europython = {2017: "Rimini", 2018: "Edinburgh", 2019: "Basel"}
+>>> merged = {**pycon, **europython}
+>>> pycon
+{2016: 'Portland', 2018: 'Cleveland'}
+>>> europython
+{2017: 'Rimini', 2018: 'Edinburgh', 2019: 'Basel'}
+>>> merged
+{2016: 'Portland', 2018: 'Edinburgh', 2017: 'Rimini', 2019: 'Basel'}
+>>> merged = pycon.copy()
+>>> merged
+{2016: 'Portland', 2018: 'Cleveland'}
+>>> for key, value in europython.items():
+...     merged[key] = value
+...
+>>> merged
+{2016: 'Portland', 2018: 'Edinburgh', 2017: 'Rimini', 2019: 'Basel'}
+>>> pycon.update(europython)
+>>> pycon
+{2016: 'Portland', 2018: 'Edinburgh', 2017: 'Rimini', 2019: 'Basel'}
+>>> pycon = {2016:"Portland", 2018:"Cleveland"}
+>>> merged = pycon.copy().update(europython)
+>>> print(merged)
+None
+>>> (merged := pycon.copy()).update(europython)
+>>> merged
+{2016: 'Portland', 2018: 'Edinburgh', 2017: 'Rimini', 2019: 'Basel'}
+>>> pycon | europython
+{2016: 'Portland', 2018: 'Edinburgh', 2017: 'Rimini', 2019: 'Basel'}
+>>> pycon
+{2016: 'Portland', 2018: 'Cleveland'}
+>>> pycon |= europython
+>>> pycon
+{2016: 'Portland', 2018: 'Edinburgh', 2017: 'Rimini', 2019: 'Basel'}
+>>> from collections import defaultdict
+>>> europe = defaultdict(lambda: "", {"Norway": "Oslo", "Spain": "Madrid"})
+>>> africa = defaultdict(lambda: "", {"Egypt": "Cairo", "Zimbabwe": "Harare"})
+>>> {**europe, **africa}
+{'Norway': 'Oslo', 'Spain': 'Madrid', 'Egypt': 'Cairo', 'Zimbabwe': 'Harare'}
+>>> europe | africa
+defaultdict(<function <lambda> at 0x7f9df7b2e5e0>, {'Norway': 'Oslo', 'Spain': 'Madrid', 'Egypt': 'Cairo', 'Zimbabwe': 'Harare'})
+>>> libraries = {"collections": "Container datatypes", "math": "Math functions"}
+>>> libraries |= [("graphlib", "Topological sort tools")]
+>>> libraries
+{'collections': 'Container datatypes', 'math': 'Math functions', 'graphlib': 'Topological sort tools'}
+>>> asia = {"Georgia": "Tbilisi", "Japan": "Tokyo"}
+>>> usa = {"Missouri": "Jefferson City", "Georgia": "Atlanta"}
+>>> asia | usa
+{'Georgia': 'Atlanta', 'Japan': 'Tokyo', 'Missouri': 'Jefferson City'}
+>>> usa | asia
+{'Missouri': 'Jefferson City', 'Georgia': 'Tbilisi', 'Japan': 'Tokyo'}
